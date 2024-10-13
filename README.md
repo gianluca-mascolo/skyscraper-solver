@@ -4,7 +4,7 @@ Work in progress...
 
 ## Example
 
-![Input Schema](example.png)
+![Input Schema](example.png) (source: [puzzle skyscrapers](https://www.puzzle-skyscrapers.com/?size=0))
 
 ```
 $ poetry run skyscraper
