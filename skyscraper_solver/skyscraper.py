@@ -51,7 +51,7 @@ def main():
         for orientation in Grid:
             for position in range(input_size):
                 line = [set() for _ in range(input_size)]
-                for check in permutate(city.get(orientation, position)):
+                for check in permutate(city.get(orientation, position),[],[]):
                     if view(check) == city.getlook(orientation, position):
                         for block, tower in zip(line, check):
                             block.add(tower)
@@ -61,10 +61,6 @@ def main():
         city.sieve()
         progress = city.weight() < initial_weight
         city.print()
-    print("XXXXXXXXXXX")
-    print(city.get(Grid.ROW, 0))
-    for i,p in enumerate(permutate(city.get(Grid.ROW, 0))):
-        print(i,p)
     return True
 
 
