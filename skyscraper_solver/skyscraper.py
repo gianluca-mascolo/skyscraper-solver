@@ -1,4 +1,5 @@
 from skyscraper_solver.skyscraperlib import City
+from skyscraper_solver.skyscraperlib import Orientation as Grid
 
 
 def permutate(blocks, stack=[], result=[]):
@@ -30,18 +31,18 @@ def view(sky):
 
 def main():
     city = City(4)
-    print(city.get("col", 0))
+    print(city.get(Grid.COLUMN, 0))
     soluzione = [set() for _ in range(4)]
     print(soluzione)
-    r = permutate(city.get("col", 0))
+    r = permutate(city.get(Grid.COLUMN, 0))
     for k in r:
         if view(k) == (1, 3):
             for s, r in zip(soluzione, k):
                 s.add(r)
             print(k, view(k))
     print(soluzione)
-    city.put("col", 0, soluzione)
-    print(city.get("col", 0))
+    city.put(Grid.COLUMN, 0, soluzione)
+    print(city.get(Grid.COLUMN, 0))
     return True
 
 
