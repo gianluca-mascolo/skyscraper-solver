@@ -14,15 +14,15 @@ def recurse(bags, stack=[], result=[]):
 
 
 def view(sky):
-    left_count = 1
-    for index, edge in enumerate(sky[1:], 1):
-        if all(map(lambda cur: cur < edge, sky[:index])):
-            left_count += 1
-    right_count = 1
-    for index, edge in enumerate(sky[:-1], 1):
-        if all(map(lambda cur: cur < edge, sky[index:])):
-            right_count += 1
-    return (left_count, right_count)
+    left_towers = 1
+    for index, observer_position in enumerate(sky[1:], 1):
+        if all(map(lambda left_horizon: observer_position > left_horizon, sky[:index])):
+            left_towers += 1
+    right_towers = 1
+    for index, observer_position in enumerate(sky[:-1], 1):
+        if all(map(lambda right_horizon: observer_position > right_horizon, sky[index:])):
+            right_towers += 1
+    return (left_towers, right_towers)
 
 
 class Block:
