@@ -2,7 +2,7 @@ from skyscraper_solver.skyscraperlib import City
 from skyscraper_solver.skyscraperlib import Orientation as Grid
 
 
-def permutate(blocks, stack=[], result=[]):
+def permutate(blocks, stack: list, result: list):
     if blocks:
         for tower in blocks[0]:
             if tower not in stack:
@@ -61,6 +61,8 @@ def main():
         city.sieve()
         progress = city.weight() < initial_weight
         city.print()
+        if city.weight() == (input_size*input_size):
+            break
     return True
 
 
