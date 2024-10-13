@@ -33,6 +33,10 @@ class City:
             self.blocks.append(Block(size))
             self.blocks[idx].row = idx // size
             self.blocks[idx].col = idx % size
+        self.look = {
+            Orientation.COLUMN.value: [tuple() for _ in range(size)],
+            Orientation.ROW.value: [tuple() for _ in range(size)]
+        }
 
     def get(self, orientation: Orientation, position):
         if position >= self.size:
@@ -47,3 +51,29 @@ class City:
         destination_blocks = [block for block in self.blocks if getattr(block, orientation.value) == position]
         for block, towers in zip(destination_blocks, line):
             block.update(towers)
+
+    def setlook(self, orientation: Orientation, position, limit: tuple):
+        self.look[orientation.value][position] = limit
+
+    def getlook(self, orientation: Orientation, position):
+        return self.look[orientation.value][position]
+
+    def print(self):
+        for i in range(self.size):
+            print(self.get(Orientation.ROW,i))
+
+    def weight(self):
+        return sum([len(block.tower) for block in self.blocks])
+
+    def sieve(self):
+        for orientation in Orientation:
+            for position in range(self.size):
+                line = list(self.get(orientation,position))
+                unique_values = set()
+                for u in filter(lambda block: len(block) == 1, line):
+                    unique_values.add(list(u)[0])
+                for block in line:
+                    if len(block) > 1:
+                        for element in unique_values:
+                            block.discard(element)
+                self.put(orientation,position,line)

@@ -31,19 +31,40 @@ def view(sky):
 
 
 def main():
-    city = City(4)
-    print(city.get(Grid.COLUMN, 0))
-    soluzione = [set() for _ in range(4)]
-    print(soluzione)
-    r = permutate(city.get(Grid.COLUMN, 0))
-    for k in r:
-        if view(k) == (1, 3):
-            for s, r in zip(soluzione, k):
-                s.add(r)
-            print(k, view(k))
-    print(soluzione)
-    city.put(Grid.COLUMN, 0, soluzione)
-    print(city.get(Grid.COLUMN, 0))
+    input_size = 4
+    city = City(input_size)
+
+    city.setlook(Grid.COLUMN, 0, (2,2))
+    city.setlook(Grid.COLUMN, 1, (2,2))
+    city.setlook(Grid.COLUMN, 2, (4,1))
+    city.setlook(Grid.COLUMN, 3, (1,4))
+
+    city.setlook(Grid.ROW, 0, (2,1))
+    city.setlook(Grid.ROW, 1, (1,2))
+    city.setlook(Grid.ROW, 2, (2,3))
+    city.setlook(Grid.ROW, 3, (3,2))
+
+    progress = True
+    while progress:
+        initial_weight = city.weight()
+        print(f"start round (weight: {initial_weight})")
+        for orientation in Grid:
+            for position in range(input_size):
+                line = [set() for _ in range(input_size)]
+                for check in permutate(city.get(orientation, position)):
+                    if view(check) == city.getlook(orientation, position):
+                        for block, tower in zip(line, check):
+                            block.add(tower)
+                        print(check, view(check), orientation.name, position)
+                city.put(orientation, position, line)
+                line.clear()
+        city.sieve()
+        progress = city.weight() < initial_weight
+        city.print()
+    print("XXXXXXXXXXX")
+    print(city.get(Grid.ROW, 0))
+    for i,p in enumerate(permutate(city.get(Grid.ROW, 0))):
+        print(i,p)
     return True
 
 
