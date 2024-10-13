@@ -1,9 +1,9 @@
-def recurse(bags, stack=[], result=[]):
-    if bags:
-        for ball in bags[0]:
-            if ball not in stack:
-                stack.append(ball)
-                recurse(bags[1:], stack, result)
+def permutate(blocks, stack=[], result=[]):
+    if blocks:
+        for tower in blocks[0]:
+            if tower not in stack:
+                stack.append(tower)
+                permutate(blocks[1:], stack, result)
         if stack:
             stack.pop()
     else:
@@ -62,7 +62,7 @@ def main():
     print(city.get("col", 0))
     soluzione = [set() for _ in range(4)]
     print(soluzione)
-    r = recurse(city.get("col", 0))
+    r = permutate(city.get("col", 0))
     for k in r:
         if view(k) == (1, 3):
             for s, r in zip(soluzione, k):
