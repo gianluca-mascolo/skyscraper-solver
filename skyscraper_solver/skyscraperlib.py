@@ -34,14 +34,16 @@ class City:
             self.blocks[idx].row = idx // size
             self.blocks[idx].col = idx % size
 
-    def get(self, orientation: Orientation, number):
-        if number >= self.size:
-            raise ValueError(f"{number} out of range 0-{self.size-1}")
-        return tuple(block.tower for block in self.blocks if getattr(block, orientation.value) == number)
+    def get(self, orientation: Orientation, position):
+        if position >= self.size:
+            raise ValueError(f"{orientation.name} {position} out of range 0-{self.size-1}")
+        return tuple(block.tower for block in self.blocks if getattr(block, orientation.value) == position)
 
-    def put(self, orientation: Orientation, number, content):
-        if number >= self.size:
-            raise ValueError(f"{number} out of range 0-{self.size-1}")
-        selezione = [block for block in self.blocks if getattr(block, orientation.value) == number]
-        for s, r in zip(selezione, content):
-            s.update(r)
+    def put(self, orientation: Orientation, position, line):
+        if position >= self.size:
+            raise ValueError(f"{orientation.name} {position} out of range 0-{self.size-1}")
+        if len(line) != self.size:
+            raise ValueError(f"invalid line {line}")
+        destination_blocks = [block for block in self.blocks if getattr(block, orientation.value) == position]
+        for block, towers in zip(destination_blocks, line):
+            block.update(towers)
