@@ -8,6 +8,9 @@ class Orientation(Enum):
     COLUMN = "col"
 
 
+INPUT_LABELS = {Orientation.COLUMN.value: ["top", "bottom"], Orientation.ROW.value: ["left", "right"]}
+
+
 class Block:
     def __init__(self, max_height: int):
         if max_height < MINIMUM_SIZE:
@@ -33,10 +36,7 @@ class City:
             self.blocks.append(Block(size))
             self.blocks[idx].row = idx // size
             self.blocks[idx].col = idx % size
-        self.look = {
-            Orientation.COLUMN.value: [tuple() for _ in range(size)],
-            Orientation.ROW.value: [tuple() for _ in range(size)]
-        }
+        self.look = {Orientation.COLUMN.value: [tuple() for _ in range(size)], Orientation.ROW.value: [tuple() for _ in range(size)]}
 
     def get(self, orientation: Orientation, position):
         if position >= self.size:
@@ -60,7 +60,7 @@ class City:
 
     def print(self):
         for i in range(self.size):
-            print(self.get(Orientation.ROW,i))
+            print("|".join(str(list(x)[0]) if len(x) == 1 else "?" for x in self.get(Orientation.ROW, i)))
 
     def weight(self):
         return sum([len(block.tower) for block in self.blocks])
@@ -68,7 +68,7 @@ class City:
     def sieve(self):
         for orientation in Orientation:
             for position in range(self.size):
-                line = list(self.get(orientation,position))
+                line = list(self.get(orientation, position))
                 unique_values = set()
                 for u in filter(lambda block: len(block) == 1, line):
                     unique_values.add(list(u)[0])
@@ -76,4 +76,4 @@ class City:
                     if len(block) > 1:
                         for element in unique_values:
                             block.discard(element)
-                self.put(orientation,position,line)
+                self.put(orientation, position, line)

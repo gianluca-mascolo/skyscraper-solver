@@ -1,4 +1,4 @@
-from skyscraper_solver.skyscraperlib import City
+from skyscraper_solver.skyscraperlib import INPUT_LABELS, City
 from skyscraper_solver.skyscraperlib import Orientation as Grid
 
 
@@ -31,18 +31,17 @@ def view(sky):
 
 
 def main():
-    input_size = 4
+    input_size = int(input("City size? "))
+
     city = City(input_size)
 
-    city.setlook(Grid.COLUMN, 0, (2,2))
-    city.setlook(Grid.COLUMN, 1, (2,2))
-    city.setlook(Grid.COLUMN, 2, (4,1))
-    city.setlook(Grid.COLUMN, 3, (1,4))
-
-    city.setlook(Grid.ROW, 0, (2,1))
-    city.setlook(Grid.ROW, 1, (1,2))
-    city.setlook(Grid.ROW, 2, (2,3))
-    city.setlook(Grid.ROW, 3, (3,2))
+    for orientation in Grid:
+        for position in range(input_size):
+            input_look = []
+            for label in INPUT_LABELS[orientation.value]:
+                value = int(input(f"{orientation.name} {position} {label} value? "))
+                input_look.append(value)
+            city.setlook(orientation, position, tuple(input_look))
 
     progress = True
     while progress:
@@ -51,7 +50,7 @@ def main():
         for orientation in Grid:
             for position in range(input_size):
                 line = [set() for _ in range(input_size)]
-                for check in permutate(city.get(orientation, position),[],[]):
+                for check in permutate(city.get(orientation, position), [], []):
                     if view(check) == city.getlook(orientation, position):
                         for block, tower in zip(line, check):
                             block.add(tower)
@@ -61,7 +60,7 @@ def main():
         city.sieve()
         progress = city.weight() < initial_weight
         city.print()
-        if city.weight() == (input_size*input_size):
+        if city.weight() == (input_size * input_size):
             break
     return True
 
