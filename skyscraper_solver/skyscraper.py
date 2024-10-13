@@ -12,7 +12,8 @@ def permutate(blocks, stack=[], result=[]):
             stack.pop()
     else:
         result.append(tuple(stack))
-        stack.pop()
+        if stack:
+            stack.pop()
         return []
     return result
 
