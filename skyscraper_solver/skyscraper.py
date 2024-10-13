@@ -64,7 +64,7 @@ def main():
     print(soluzione)
     r = recurse(city.get("col", 0))
     for k in r:
-        if view(k) == (3, 1):
+        if view(k) == (1, 3):
             for s, r in zip(soluzione, k):
                 s.add(r)
             print(k, view(k))
